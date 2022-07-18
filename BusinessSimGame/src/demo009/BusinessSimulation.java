@@ -13,10 +13,13 @@ import demo009.menu.impl.CommandLoehneFestlegen;
 import demo009.menu.impl.CommandPrintNiederlassungen;
 import demo009.menu.impl.CommandSpeichern;
 import demo009.menu.impl.CommandVerkaufen;
+import demo009.menu.impl.CommandWertanlageKaufen;
+import demo009.menu.impl.CommmandWertanlagenAnzeigen;
 import demo009.model.Fuhrpark;
 import demo009.model.Lager;
 import demo009.model.Niederlassung;
 import demo009.model.Warenart;
+import demo009.model.Wertanlage; 
 import demo009.misc.DisplayService;
 
 import java.util.ArrayList;
@@ -49,6 +52,7 @@ public class BusinessSimulation {
 			DisplayService.anzeigenNiederlassung(appContext);
 			DisplayService.anzeigenLager(appContext);
 			DisplayService.anzeigenGuthaben(appContext);
+			Wertanlage.insertWertanlagen();
 					
 			// TODO Aktuellen Bestand im Lager ausgeben
 			// TODO aktuelle Liste der Niederlassungen ausgeben
@@ -90,11 +94,13 @@ public class BusinessSimulation {
 		// Fuhrwerk ist 20 Taler
 		appContext.setFuhrpark(new Fuhrpark(1, 20));
 		
+		
 	}
 	
 	private Menu initMainMenu() {
 		
 		// Untermenu f�r die Verwaltung der Niederlassungen und Transporte
+		
 		Submenu subNiederlassung = new Submenu("Niederlassungen, Anforderungen verwalten", appContext, "Zur�ck");
 		subNiederlassung.setCommand(new CommandAnfordern());
 		subNiederlassung.setCommand(new CommandEinstellen());
@@ -103,20 +109,29 @@ public class BusinessSimulation {
 		
 		
 		// Untermenu f�r die Verwaltung der Fuhrwerke
+		
 		Submenu subFuhrpark = new Submenu("Fuhrpark verwalten", appContext, "Zur�ck");
 		subFuhrpark.setCommand(new CommandFuhrwerkKaufen());
 		subFuhrpark.setCommand(new CommandFuhrwerkVerkaufen());
 		// TODO CommandFuhrwerkeReparieren
 		
+		Submenu subWertanlagen = new Submenu("Wertanlagen verwalten", appContext, "Zurück");
+		subWertanlagen.setCommand(new CommandWertanlageKaufen());
+		subWertanlagen.setCommand(new CommmandWertanlagenAnzeigen());
+		
 		// Hauptmenu
+		
 		Menu mainMenu = new Menu("Hauptmenu", appContext, "Runde beenden");
 		mainMenu.setCommand(new CommandVerkaufen());
 		mainMenu.setCommand(subNiederlassung);
 		mainMenu.setCommand(subFuhrpark);
+		mainMenu.setCommand(subWertanlagen);
 		mainMenu.setCommand(new CommandPrintNiederlassungen());
 		mainMenu.setCommand(new CommandSpeichern());
 		
+		
 		return mainMenu;
 	}
+
 
 }
